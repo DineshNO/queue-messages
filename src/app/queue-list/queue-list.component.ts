@@ -1,65 +1,64 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { QueueServiceService } from '../shared/queue-service.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Queue } from '../shared/queue.model';
+import { QueueService } from './queue.service';
 
 @Component({
   selector: 'app-queue-list',
   templateUrl: './queue-list.component.html',
   styleUrls: ['./queue-list.component.css']
 })
-export class QueueListComponent implements OnInit {
+export class QueueListComponent implements OnInit, OnDestroy {
+  subscription: Subscription;
+  queueForm: FormGroup;
+  queueList: string[];
+  queues: Queue[];
 
   constructor(private fb: FormBuilder,
-              private queueService: QueueServiceService) { }
-              
-  queueForm: FormGroup;
-  queueList : string[];
+    private queueService: QueueService) { }
 
-  public queues: Queue[] = [
-    new Queue('nm-ehf', 5, false),
-    new Queue('layout-factory-test', 5, false),
-    new Queue('b2b-inbound', 9, false)
-  ];
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   ngOnInit(): void {
-    // this.queueService.getErrorQueueList()
-    //     .subscribe(queues => this.queues = queues );
-    this.initForm()
+    this.subscription = this.queueService
+      .queueChanged
+      .subscribe((queues: Queue[]) => this.queues = queues);
+    this.queues = this.queueService.getQueues();
+    this.initForm();
   }
 
   onSubmit() {
-    console.log("Values",this.queueForm.value.queueArray);
-    this.queueList=[];
+    console.log("Values", this.queueForm.value.queueArray);
+    this.queueList = [];
     this.queueForm.value.queueArray
-        .filter(queue => queue.selected)
-        .forEach(queue => this.queueList.push(queue.name));
+      .filter(queue => queue.selected)
+      .forEach(queue => this.queueList.push(queue.name));
   }
 
-  onRefresh(){
-    this.queueService.getErrorQueueList()
-        .subscribe(queues => this.queues = queues );
-  }
-
-  initForm(){
+  initForm() {
     this.queueForm = this.fb.group({
       queueArray: this.fb.array([])
     });
-    this.initQueues(this.queues);
+    this.initQueues();
   }
-  initQueues(queues) {
+  initQueues() {
     const control = <FormArray>this.queueForm.controls['queueArray'];
     this.queues.forEach(x => {
       control.push(this.initQ(x));
     });
   }
 
-  initQ(q?: Queue): FormGroup {
-  
+  initQ(queue: Queue): FormGroup {
     return this.fb.group({
-      name: q.name,
-      count: q.count,
-      selected: q.selected
+      name: queue.name,
+      count: queue.count,
+      selected: queue.selected
     });
   }
+
+  onRefresh(){}
 }
+
