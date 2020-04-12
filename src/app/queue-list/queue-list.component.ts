@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Queue } from '../shared/queue.model';
 import { QueueService } from './queue.service';
 
@@ -14,6 +14,7 @@ export class QueueListComponent implements OnInit, OnDestroy {
   queueForm: FormGroup;
   queueList: string[];
   queues: Queue[];
+  shoppingListState: Observable<{ queues: Queue[] }>;
 
   constructor(private fb: FormBuilder,
     private queueService: QueueService) { }
@@ -36,6 +37,7 @@ export class QueueListComponent implements OnInit, OnDestroy {
     this.queueForm.value.queueArray
       .filter(queue => queue.selected)
       .forEach(queue => this.queueList.push(queue.name));
+    this.queueService.resend(this.queueList)
   }
 
   initForm() {
@@ -59,6 +61,6 @@ export class QueueListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onRefresh(){}
+  onRefresh() { }
 }
 

@@ -10,7 +10,7 @@ export class QueueService {
 
   public queueChanged = new Subject<Queue[]>();
 
-  constructor() { }
+  constructor(private dataService : DataService) { }
 
   private queues: Queue[] = [];
 
@@ -23,8 +23,9 @@ export class QueueService {
     this.queueChanged.next(this.queues.slice());
   }
 
-  resend(queues: Queue[]) {
-
+  resend(queues: string[]) {
+      this.dataService.resendQueues(queues)
+          .subscribe(response => console.log(response));
   }
 
 }

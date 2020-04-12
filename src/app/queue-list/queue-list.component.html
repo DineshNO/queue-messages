@@ -1,33 +1,31 @@
-<div class="container-fluid">
-    <div class="row  justify-content-start">
-        <div class="col-xs-10" *ngIf="queues">
-            <form name="queueForm" [formGroup]="queueForm" novalidate (ngSubmit)="onSubmit()">
-                <table formArrayName="queueArray" class="table bg-light" style="width: 900px;">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">Queue Name</th>
-                            <th scope="col">Count</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr [formGroupName]="i"
-                            *ngFor="let queueControl of queueForm['controls'].queueArray['controls'];
+<form name="queueForm" [formGroup]="queueForm" novalidate (ngSubmit)="onSubmit()">
+    <div class="container-fluid-d">
+        <table formArrayName="queueArray" class="table bg-light">
+            <thead class="thead-light">
+                <tr>
+                    <th>Queue Name</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr [formGroupName]="i" *ngFor="let queueControl of queueForm['controls'].queueArray['controls'];
                                         let queue of queues;
                                         let i = index">
-                            <td>{{queue.name}}</td>
-                            <td>{{queue.count}}</td>
-                            <td><input formControlName="selected" type="checkbox" style="align-content: center;"></td>
-                        </tr>
-                        
-                    </tbody>
-                </table>
-                <div class="col-xs-12">
-                    <button class="btn btn-success" type="submit">Resend</button>
-                    <button class="btn btn-danger" type="button">Delete</button>
-                    <button class="btn btn-primary" type="button" (click)="onRefresh()">Refresh</button>
-                </div>
-            </form>
+                    <td class="col">
+                        <div class="custom-control custom-checkbox justify-content-start">
+                            <input formControlName="selected" type="checkbox" class="custom-control-input"
+                                id="label{{i}}">
+                            <label class="custom-control-label" for="label{{i}}">{{queue.name}}</label>
+                        </div>
+                    </td>
+                    <td class="col"><span class="badge badge-primary badge-pill">{{queue.count}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <button class="btn btn-success" type="submit">Resend</button>
+            <button class="btn btn-danger" type="button">Delete</button>
+            <button class="btn btn-primary" type="button" (click)="onRefresh()">Refresh</button>
         </div>
     </div>
-</div>
+</form>

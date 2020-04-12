@@ -16,18 +16,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService,
     private router: Router,
     private route: ActivatedRoute,
-    private queueService : QueueService) { }
+    private queueService: QueueService) { }
 
   ngOnDestroy(): void {
-    // this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.dataService.getErrorQueueList()
-        .subscribe(queues => this.queueService.setQueues(queues));
-  }
-  onFetchQueues() {
-    this.router.navigate(['queues'], { relativeTo: this.route });
+    this.subscription = this.dataService.getErrorQueueList()
+      .subscribe(queues => this.queueService.setQueues(queues));
   }
 
 }
