@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DataService } from '../shared/data.service';
-import { Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { QueueService } from '../queue-list/queue.service';
+import * as appActions from '../store/app.action';
+import { Queue } from '../shared/queue.model';
 
 @Component({
   selector: 'app-header',
@@ -11,20 +12,17 @@ import { QueueService } from '../queue-list/queue.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  private subscription: Subscription;
-
-  constructor(private dataService: DataService,
+  constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private queueService: QueueService) { }
+    private queueService: QueueService,
+    private store: Store<{ queues: { queues: Queue[] } }>) { }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.subscription = this.dataService.getErrorQueueList()
-      .subscribe(queues => this.queueService.setQueues(queues));
+    this.store.dispatch(new appActions.FetchQueues())
   }
 
 }

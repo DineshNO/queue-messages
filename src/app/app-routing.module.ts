@@ -1,9 +1,16 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import {QueueListComponent} from './queue-list/queue-list.component'
+import { RouterModule, Routes, PreloadingStrategy, PreloadAllModules } from '@angular/router';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './core/home/home.component';
 
 const routes: Routes = [
-  { path: 'queues', component: QueueListComponent }
+  {
+    path: '', component: HomeComponent
+  },
+  {
+    path: 'queues',
+    loadChildren: () => import('./queue-list/queue-list.module').then(m => m.QueueListModule)
+  }
 ];
 
 @NgModule({

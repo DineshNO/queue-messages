@@ -3,36 +3,31 @@ import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { Queue } from '../shared/queue.model';
 import { QueueService } from './queue.service';
+import { Store } from "@ngrx/store";
 
 @Component({
   selector: 'app-queue-list',
   templateUrl: './queue-list.component.html',
   styleUrls: ['./queue-list.component.css']
 })
-export class QueueListComponent implements OnInit, OnDestroy {
+export class QueueListComponent implements OnInit {
   subscription: Subscription;
   queueForm: FormGroup;
   queueList: string[];
   queues: Queue[];
+  queue$: Observable<{ queues: Queue[] }>;
   shoppingListState: Observable<{ queues: Queue[] }>;
 
   constructor(private fb: FormBuilder,
-    private queueService: QueueService) { }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+    private queueService: QueueService,
+    private store: Store<{ queues: { queues: Queue[] } }>) { }
 
   ngOnInit(): void {
-    this.subscription = this.queueService
-      .queueChanged
-      .subscribe((queues: Queue[]) => this.queues = queues);
-    this.queues = this.queueService.getQueues();
-    this.initForm();
+    this.queue$ = this.store.select('queues');
+    this.queue$.subscribe(res => this.initForm(res.queues))
   }
 
   onSubmit() {
-    console.log("Values", this.queueForm.value.queueArray);
     this.queueList = [];
     this.queueForm.value.queueArray
       .filter(queue => queue.selected)
@@ -40,27 +35,19 @@ export class QueueListComponent implements OnInit, OnDestroy {
     this.queueService.resend(this.queueList)
   }
 
-  initForm() {
+  initForm(queues: Queue[]) {
     this.queueForm = this.fb.group({
       queueArray: this.fb.array([])
     });
-    this.initQueues();
-  }
-  initQueues() {
     const control = <FormArray>this.queueForm.controls['queueArray'];
-    this.queues.forEach(x => {
-      control.push(this.initQ(x));
-    });
-  }
-
-  initQ(queue: Queue): FormGroup {
-    return this.fb.group({
-      name: queue.name,
-      count: queue.count,
-      selected: queue.selected
-    });
+    queues.forEach(
+      (queue) => control.push(this.fb.group({
+        name: queue.name,
+        count: queue.count,
+        selected: queue.selected
+      }))
+    )
   }
 
   onRefresh() { }
 }
-
