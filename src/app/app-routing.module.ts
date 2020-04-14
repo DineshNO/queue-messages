@@ -9,12 +9,12 @@ const routes: Routes = [
   },
   {
     path: 'queues',
-    loadChildren: () => import('./queue-list/queue-list.module').then(m => m.QueueListModule)
+    loadChildren: () => import('./queue/queue.module').then(m => m.QueueModule)
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

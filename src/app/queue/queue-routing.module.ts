@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { QueueListComponent } from './queue-list.component';
+import { QueueComponent } from './queue.component';
 
 const queueRoutes: Routes = [
     {
-        path: '', component: QueueListComponent
+        path: '', component: QueueComponent
     }
 ]
 

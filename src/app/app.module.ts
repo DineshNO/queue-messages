@@ -1,32 +1,28 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { QueueListModule } from './queue-list/queue-list.module';
-import { QueueService } from './queue-list/queue.service';
-import { DataService } from './shared/data.service';
-import { QueueInterceptor } from './shared/queue.interceptor';
-import { HomeComponent } from './core/home/home.component';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { AppEffects } from './store/app.effect';
-import { appReducer } from './store/app.reducer';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { QueueModule } from './queue/queue.module';
+import { QueueService } from './queue/queue.service';
+import { DataService } from './shared/data.service';
+import { QueueInterceptor } from './shared/queue.interceptor';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    HomeComponent     
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    QueueListModule,
-    StoreModule.forRoot({queues : appReducer}),
-    EffectsModule.forRoot([AppEffects]),
+    QueueModule,
+    CoreModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([])
   ],
   providers: [
     QueueService,

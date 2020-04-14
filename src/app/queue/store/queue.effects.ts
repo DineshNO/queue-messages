@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { map, switchMap } from 'rxjs/operators';
-import { Queue } from '../shared/queue.model';
-import * as appActions from './app.action';
+import { Queue } from '../../shared/queue.model';
+import * as queueActions from './queue.action';
 
 @Injectable()
-export class AppEffects {
+export class QueueEffects {
 
     constructor(private action$: Actions,
          private httpClient: HttpClient, 
@@ -16,9 +16,9 @@ export class AppEffects {
 
     @Effect()
     fetchQueue = this.action$  
-                    .ofType(appActions.FETCH_QUEUES).pipe(
+                    .ofType(queueActions.FETCH_QUEUES).pipe(
                         switchMap(
-                            (action : appActions.FetchQueues) => {
+                            (action : queueActions.FetchQueues) => {
                                 return this.httpClient.get<Queue[]>('http://localhost:9090/queues',
                                 {
                                     observe: 'body',
@@ -28,7 +28,7 @@ export class AppEffects {
                             ,map(
                                 (queues) => {
                                     return {
-                                        type: appActions.SET_QUEUES,
+                                        type: queueActions.SET_QUEUES,
                                         payload: queues
                                     };
                                 }

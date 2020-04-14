@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Queue } from '../shared/queue.model';
+import { Queue } from '../../shared/queue.model';
 
 export const FETCH_QUEUES = 'FETCH_QUEUES';
 export const SET_QUEUES = 'SET_QUEUES';
@@ -15,4 +15,4 @@ export class SetQueues implements Action {
 }
 
 
-export type appActions = FetchQueues | SetQueues;
+export type QueueActions = FetchQueues | SetQueues;
