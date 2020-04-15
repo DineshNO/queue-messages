@@ -1,6 +1,6 @@
-<!-- <div *ngIf="queueForm"> -->
-    <form name="queueForm" [formGroup]="queueForm" novalidate (ngSubmit)="onSubmit()">
-        <div class="container-fluid-d">
+<form name="queueForm" [formGroup]="queueForm" novalidate (ngSubmit)="onSubmit()">
+    <div class="container-fluid-d">
+        <div *ngIf="(queue$ | async) as queueList; else loading">
             <table formArrayName="queueArray" class="table bg-light">
                 <thead class="thead-light">
                     <tr>
@@ -9,7 +9,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let queue of (queue$ | async).queues;let i = index">
+                    <tr *ngFor="let queue of queueList.queues ;
+                                let i = index">
                         <td class="col">
                             <div class="custom-control custom-checkbox justify-content-start">
                                 <input type="checkbox" class="custom-control-input" id="label-{{i}}">
@@ -26,5 +27,6 @@
                 <button class="btn btn-primary" type="button">Refresh</button>
             </div>
         </div>
-    </form>
-<!-- </div> -->
+        <ng-template #loading>Loading Queue Data...</ng-template>
+    </div>
+</form>
