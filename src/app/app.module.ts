@@ -10,6 +10,9 @@ import { QueueModule } from './queue/queue.module';
 import { QueueService } from './queue/queue.service';
 import { DataService } from './shared/data.service';
 import { QueueInterceptor } from './shared/queue.interceptor';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from './../environments/environment'
 
 @NgModule({
   declarations: [
@@ -22,7 +25,9 @@ import { QueueInterceptor } from './shared/queue.interceptor';
     QueueModule,
     CoreModule,
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    StoreRouterConnectingModule,
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
     QueueService,

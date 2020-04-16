@@ -1,6 +1,6 @@
 <form name="queueForm" [formGroup]="queueForm" novalidate (ngSubmit)="onSubmit()">
     <div class="container-fluid-d">
-        <div *ngIf="(queue$ | async) as queueList; else loading">
+        <div *ngIf="queues; else loading">
             <table formArrayName="queueArray" class="table bg-light">
                 <thead class="thead-light">
                     <tr>
@@ -9,21 +9,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let queue of queueList.queues ;
+                    <tr [formGroupName]="i" *ngFor="let queueCtrl of queueForm['controls'].queueArray['controls'] ;
+                                let q of queues
                                 let i = index">
                         <td class="col">
                             <div class="custom-control custom-checkbox justify-content-start">
-                                <input type="checkbox" class="custom-control-input" id="label-{{i}}">
-                                <label class="custom-control-label" for="label-{{i}}">{{queue.name}}</label>
+                                <input formControlName="selected" type="checkbox" class="custom-control-input" id="label-{{i}}">
+                                <label class="custom-control-label" for="label-{{i}}">{{q.name}}</label>
                             </div>
                         </td>
-                        <td class="col"><span class="badge badge-primary badge-pill">{{queue.count}}</span></td>
+                        <td class="col"><span class="badge badge-primary badge-pill">{{q.count}}</span></td>
                     </tr>
                 </tbody>
             </table>
             <div>
                 <button class="btn btn-success" type="submit">Resend</button>
-                <button class="btn btn-danger" type="button">Delete</button>
+                <button class="btn btn-danger" type="button" (click)="onDelete()">Delete</button>
                 <button class="btn btn-primary" type="button">Refresh</button>
             </div>
         </div>
