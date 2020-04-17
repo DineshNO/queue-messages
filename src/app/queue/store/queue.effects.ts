@@ -35,7 +35,7 @@ export class QueueEffects {
         )
     );
 
-    @Effect()
+    @Effect({ dispatch: false })
     resendQueues = this.action$.ofType(queueActions.RESEND_QUEUES)
         .pipe(
             switchMap(
@@ -45,11 +45,11 @@ export class QueueEffects {
                 }
             ),
             map(
-                res => this.store.dispatch(new queueActions.FetchQueues())
+                res => console.log("Response",res)
             )
         )
 
-    @Effect()
+    @Effect({ dispatch: false })
     deleteQueues = this.action$.ofType(queueActions.DELETE_QUEUES)
         .pipe(
             switchMap(
@@ -59,7 +59,7 @@ export class QueueEffects {
                 }
             ),
             map(
-                res => this.store.dispatch(new queueActions.FetchQueues())
+                res => console.log("Response",res)
             )
         )
 }
