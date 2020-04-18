@@ -1,6 +1,7 @@
 import * as queueActions from './queue.action'
 import * as fromRoot from '../../store/app.reducer'
 import { Queue } from '../../shared/queue.model'
+import { createFeatureSelector, createSelector } from '@ngrx/store'
 
 export interface State extends fromRoot.State {
     queues: QueueState,
@@ -8,13 +9,34 @@ export interface State extends fromRoot.State {
 
 export interface QueueState {
     queues: Queue[];
-    selectedQueues: Queue[]
+    selectedQueues: Queue[],
+    successMessage: string,
+    error: string
 }
 
 const initialState: QueueState = {
     queues: [],
-    selectedQueues: []
-}
+    selectedQueues: [],
+    successMessage: '',
+    error: ''
+};
+
+const getQueueListFeatureState = createFeatureSelector<QueueState>('queues');
+
+export const getQueueList = createSelector(
+    getQueueListFeatureState,
+    state => state?.queues
+)
+
+export const getSuccessMessage = createSelector(
+    getQueueListFeatureState,
+    state => state?.successMessage
+)
+
+export const getError = createSelector(
+    getQueueListFeatureState,
+    state => state?.error
+)
 
 export function queueReducer(state: QueueState = initialState, action: queueActions.QueueActions): QueueState {
     switch (action.type) {
@@ -35,6 +57,18 @@ export function queueReducer(state: QueueState = initialState, action: queueActi
             return {
                 ...state,
                 queues: queues
+            }
+        case queueActions.RESEND_SUCCESS:
+            return {
+                ...state,
+                successMessage: 'Queue resend is successful',
+                error:''
+            }
+        case queueActions.RESEND_FAILED:
+            return {
+                ...state,
+                successMessage: '',
+                error:'Queue resend failed'
             }
     }
 }

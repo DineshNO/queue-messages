@@ -1,4 +1,12 @@
 <form name="queueForm" [formGroup]="queueForm" novalidate (ngSubmit)="onSubmit()">
+    <section id="top">
+        <div *ngIf="successMessage$ | async as successMessage">
+            <div class="alert alert-success">{{successMessage}}</div>
+        </div>
+        <div *ngIf="errorMessage$ | async as errorMessage">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+        </div>
+    </section>
     <div class="container-fluid-d">
         <div *ngIf="queues; else loading">
             <table formArrayName="queueArray" class="table bg-light">
@@ -14,7 +22,8 @@
                                 let i = index">
                         <td class="col">
                             <div class="custom-control custom-checkbox justify-content-start">
-                                <input formControlName="selected" type="checkbox" class="custom-control-input" id="label-{{i}}">
+                                <input formControlName="selected" type="checkbox" class="custom-control-input"
+                                    id="label-{{i}}">
                                 <label class="custom-control-label" for="label-{{i}}">{{q.name}}</label>
                             </div>
                         </td>

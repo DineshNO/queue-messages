@@ -1,11 +1,20 @@
 import { Action } from '@ngrx/store';
 import { Queue } from '../../shared/queue.model';
 
+export enum QueueActionEnum{
+FETCH_QUEUES = 'FETCH_QUEUES',
+SET_QUEUES = 'SET_QUEUES',
+SELECT_QUEUE = 'SELECT_QUEUE',
+RESEND_QUEUES = 'RESEND_QUEUES',
+DELETE_QUEUES = 'DELETE_QUEUES'
+}
 export const FETCH_QUEUES = 'FETCH_QUEUES';
 export const SET_QUEUES = 'SET_QUEUES';
 export const SELECT_QUEUE = 'SELECT_QUEUE';
 export const RESEND_QUEUES = 'RESEND_QUEUES';
 export const DELETE_QUEUES = 'DELETE_QUEUES';
+export const RESEND_SUCCESS = 'RESEND_SUCCESS';
+export const RESEND_FAILED = 'RESEND_FAILED';
 
 export class FetchQueues implements Action {
     readonly type: string = FETCH_QUEUES
@@ -34,4 +43,16 @@ export class DeleteQueues implements Action {
     constructor(public payload: string[]) { }
 }
 
-export type QueueActions = FetchQueues | SetQueues | ResendQueues | SelectQueue | DeleteQueues;
+export class ResendSuccess implements Action {
+    readonly type: string = RESEND_SUCCESS
+    payload : any
+    constructor() { }
+}
+
+export class ResendFailed implements Action {
+    readonly type: string = RESEND_FAILED
+    payload : any
+    constructor() { }
+}
+
+export type QueueActions = FetchQueues | SetQueues | ResendQueues | SelectQueue | DeleteQueues | ResendFailed | ResendSuccess;

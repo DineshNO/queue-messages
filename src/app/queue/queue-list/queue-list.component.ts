@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, from } from 'rxjs';
 import { Queue } from '../../shared/queue.model';
 import { QueueService } from '../queue.service';
 import * as fromQueue from '../store/queue.reducer';
@@ -17,6 +17,8 @@ export class QueueListComponent implements OnInit, OnDestroy {
   queueForm: FormGroup;
   queueList: string[];
   queues: Queue[];
+  successMessage$: Observable<string>;
+  errorMessage$: Observable<string>;
 
   constructor(private fb: FormBuilder,
     private queueService: QueueService,
@@ -27,13 +29,15 @@ export class QueueListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.store.pipe(select('queues'))
+    this.subscription = this.store.pipe(select(fromQueue.getQueueList))
       .subscribe(queues => {
         if (queues) {
-          this.queues = queues.queues,
+          this.queues = queues,
             this.initForm();
         }
       });
+     this.successMessage$ = this.store.pipe(select(fromQueue.getSuccessMessage)) 
+     this.errorMessage$ = this.store.pipe(select(fromQueue.getError)) 
   }
 
   initForm(queues?: Queue[]) {
