@@ -7,34 +7,33 @@
             <div class="alert alert-danger">{{errorMessage}}</div>
         </div>
     </section>
-    <div class="container-fluid-d">
+    <div class="container-fluid-d table-responsive">
         <div *ngIf="queues; else loading">
-            <table formArrayName="queueArray" class="table bg-light">
-                <thead class="thead-light">
+            <table formArrayName="queueArray" class="table table-success table-sm">
+                <thead class="thead-dark">
                     <tr>
-                        <th>Queue Name</th>
-                        <th>Count</th>
+                        <th style="width: 60%;text-align: center;">Queue Name</th>
+                        <th style="width: 40%;text-align: center">Count</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr [formGroupName]="i" *ngFor="let queueCtrl of queueForm['controls'].queueArray['controls'] ;
-                                let q of queues
+                                let queue of queues
                                 let i = index">
-                        <td class="col">
+                        <td>
                             <div class="custom-control custom-checkbox justify-content-start">
-                                <input formControlName="selected" type="checkbox" class="custom-control-input"
-                                    id="label-{{i}}">
-                                <label class="custom-control-label" for="label-{{i}}">{{q.name}}</label>
+                                <input formControlName="selected" type="checkbox" class="custom-control-input" id="label-{{i}}">
+                                <label class="custom-control-label" for="label-{{i}}">{{queue.name}}</label>
                             </div>
                         </td>
-                        <td class="col"><span class="badge badge-primary badge-pill">{{q.count}}</span></td>
+                        <td style="width: 16.66%;text-align: center;"><span class="badge badge-danger badge-pill" style="width: 50px">{{queue.count}}</span></td>
                     </tr>
                 </tbody>
             </table>
             <div>
                 <button class="btn btn-success" type="submit">Resend</button>
-                <button class="btn btn-danger" type="button" (click)="onDelete()">Delete</button>
-                <button class="btn btn-primary" type="button">Refresh</button>
+                <button class="btn btn-danger" type="button" (click)="delete()">Delete</button>
+                <button class="btn btn-primary" type="button" (click)="clear()">Refresh</button>
             </div>
         </div>
         <ng-template #loading>Loading Queue Data...</ng-template>

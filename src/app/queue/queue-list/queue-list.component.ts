@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { Subscription, Observable, from } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Queue } from '../../shared/queue.model';
-import { QueueService } from '../queue.service';
-import * as fromQueue from '../store/queue.reducer';
 import * as queueActions from '../store/queue.action';
+import * as fromQueue from '../store/queue.reducer';
 
 @Component({
   selector: 'app-queue-list',
@@ -21,26 +20,25 @@ export class QueueListComponent implements OnInit, OnDestroy {
   errorMessage$: Observable<string>;
 
   constructor(private fb: FormBuilder,
-    private queueService: QueueService,
     private store: Store<fromQueue.State>) {
-    this.queueForm = this.fb.group({
-      queueArray: this.fb.array([])
-    });
   }
 
   ngOnInit(): void {
     this.subscription = this.store.pipe(select(fromQueue.getQueueList))
-      .subscribe(queues => {
-        if (queues) {
-          this.queues = queues,
-            this.initForm();
-        }
-      });
+                            .subscribe(queues => {
+                              if (queues) {
+                                this.queues = queues;
+                                this.initForm();
+                              }
+                            });
      this.successMessage$ = this.store.pipe(select(fromQueue.getSuccessMessage)) 
      this.errorMessage$ = this.store.pipe(select(fromQueue.getError)) 
   }
 
-  initForm(queues?: Queue[]) {
+  initForm() {
+    this.queueForm = this.fb.group({
+      queueArray: this.fb.array([])
+    });
     const control = <FormArray>this.queueForm.controls['queueArray'];
     this.queues.forEach(
       (queue) => control.push(this.fb.group({
@@ -49,7 +47,6 @@ export class QueueListComponent implements OnInit, OnDestroy {
         selected: queue.selected
       }))
     );
-    this.subscription.unsubscribe();
   }
 
   onClick(index: number, event: any) {
@@ -63,23 +60,26 @@ export class QueueListComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.queueList = [];
-    this.queueForm.value.queueArray
-      .filter(queue => queue.selected)
-      .forEach(queue => this.queueList.push(queue.name));
-    this.store.dispatch(new queueActions.ResendQueues(this.queueList));
+    this.filterQuery()
+    this.store.dispatch(new queueActions.ResendQueues(this.queueList)); 
+    //this.clear()   
   }
 
-  onDelete() {
-    this.queueList = [];
-    this.queueForm.value.queueArray
-      .filter(queue => queue.selected)
-      .forEach(queue => this.queueList.push(queue.name));
+  delete() {
+    this.filterQuery()
     this.store.dispatch(new queueActions.DeleteQueues(this.queueList));
+    //this.clear()   
   }
 
-  onClear() {
-    this.store.dispatch(new queueActions.FetchQueues());
+  filterQuery(){
+    this.queueList = [];
+    this.queueForm.value.queueArray
+      .filter(queue => queue.selected)
+      .forEach(queue => this.queueList.push(queue.name));
+  }
+
+  clear() {
+    this.queueForm.reset()
   }
 
 }

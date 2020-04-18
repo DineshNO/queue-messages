@@ -1,12 +1,12 @@
 import { Action } from '@ngrx/store';
 import { Queue } from '../../shared/queue.model';
 
-export enum QueueActionEnum{
-FETCH_QUEUES = 'FETCH_QUEUES',
-SET_QUEUES = 'SET_QUEUES',
-SELECT_QUEUE = 'SELECT_QUEUE',
-RESEND_QUEUES = 'RESEND_QUEUES',
-DELETE_QUEUES = 'DELETE_QUEUES'
+export enum QueueActionEnum {
+    FETCH_QUEUES = 'FETCH_QUEUES',
+    SET_QUEUES = 'SET_QUEUES',
+    SELECT_QUEUE = 'SELECT_QUEUE',
+    RESEND_QUEUES = 'RESEND_QUEUES',
+    DELETE_QUEUES = 'DELETE_QUEUES'
 }
 export const FETCH_QUEUES = 'FETCH_QUEUES';
 export const SET_QUEUES = 'SET_QUEUES';
@@ -15,10 +15,12 @@ export const RESEND_QUEUES = 'RESEND_QUEUES';
 export const DELETE_QUEUES = 'DELETE_QUEUES';
 export const RESEND_SUCCESS = 'RESEND_SUCCESS';
 export const RESEND_FAILED = 'RESEND_FAILED';
+export const DELETE_SUCCESS = 'DELETE_SUCCESS';
+export const DELETE_FAILED = 'DELETE_FAILED';
 
 export class FetchQueues implements Action {
     readonly type: string = FETCH_QUEUES
-    payload : any
+    payload: any
     constructor() { }
 }
 
@@ -30,7 +32,7 @@ export class SetQueues implements Action {
 
 export class SelectQueue implements Action {
     readonly type: string = SELECT_QUEUE;
-    constructor(public payload: { index: number}) { }
+    constructor(public payload: { index: number }) { }
 }
 
 export class ResendQueues implements Action {
@@ -45,13 +47,25 @@ export class DeleteQueues implements Action {
 
 export class ResendSuccess implements Action {
     readonly type: string = RESEND_SUCCESS
-    payload : any
+    payload: string = 'Queue resend was successful'
     constructor() { }
 }
 
 export class ResendFailed implements Action {
     readonly type: string = RESEND_FAILED
-    payload : any
+    payload: string = 'Queue resend failed'
+    constructor() { }
+}
+
+export class DeleteSuccess implements Action {
+    readonly type: string = DELETE_SUCCESS
+    payload: string = 'Queue delete was successful'
+    constructor() { }
+}
+
+export class DeleteFailed implements Action {
+    readonly type: string = DELETE_FAILED
+    payload: string = 'Queue delete failed'
     constructor() { }
 }
 

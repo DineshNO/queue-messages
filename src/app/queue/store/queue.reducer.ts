@@ -43,32 +43,21 @@ export function queueReducer(state: QueueState = initialState, action: queueActi
         case queueActions.SET_QUEUES:
             return {
                 ...state,
-                queues: [...action.payload]
-            }
-        case queueActions.SELECT_QUEUE:
-            const index = action.payload['index'];
-            const queue = state.queues[index];
-            const updatedQueue = {
-                ...queue,
-                selected: !queue.selected
-            }
-            const queues = [...state.queues]
-            queues[action.payload.index] = updatedQueue
-            return {
-                ...state,
-                queues: queues
+                queues: action.payload
             }
         case queueActions.RESEND_SUCCESS:
+        case queueActions.DELETE_SUCCESS:
             return {
                 ...state,
-                successMessage: 'Queue resend is successful',
-                error:''
+                successMessage: action.payload,
+                error: ''
             }
         case queueActions.RESEND_FAILED:
+        case queueActions.DELETE_FAILED:
             return {
                 ...state,
                 successMessage: '',
-                error:'Queue resend failed'
+                error: action.payload
             }
     }
 }
