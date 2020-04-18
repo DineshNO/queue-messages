@@ -2,15 +2,21 @@ import * as queueActions from './queue.action'
 import * as fromRoot from '../../store/app.reducer'
 import { Queue } from '../../shared/queue.model'
 
-export interface QueueState extends fromRoot.State {
-    queues: Queue[]
+export interface State extends fromRoot.State {
+    queues: QueueState,
+}
+
+export interface QueueState {
+    queues: Queue[];
+    selectedQueues: Queue[]
 }
 
 const initialState: QueueState = {
-    queues: []
+    queues: [],
+    selectedQueues: []
 }
 
-export function queueReducer(state: QueueState = initialState, action: queueActions.QueueActions) {
+export function queueReducer(state: QueueState = initialState, action: queueActions.QueueActions): QueueState {
     switch (action.type) {
         case queueActions.SET_QUEUES:
             return {

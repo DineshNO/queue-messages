@@ -5,8 +5,7 @@ import { Subscription } from 'rxjs';
 import { Queue } from '../../shared/queue.model';
 import { QueueService } from '../queue.service';
 import * as fromQueue from '../store/queue.reducer';
-import * as queueActions from '../store/queue.action'
-import { take } from 'rxjs/operators';
+import * as queueActions from '../store/queue.action';
 
 @Component({
   selector: 'app-queue-list',
@@ -21,7 +20,7 @@ export class QueueListComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
     private queueService: QueueService,
-    private store: Store<fromQueue.QueueState>) {
+    private store: Store<fromQueue.State>) {
     this.queueForm = this.fb.group({
       queueArray: this.fb.array([])
     });
@@ -29,10 +28,10 @@ export class QueueListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.store.pipe(select('queues'))
-      .subscribe(res => {
-        if (res) {
-          this.queues = res['queues'];
-          this.initForm();
+      .subscribe(queues => {
+        if (queues) {
+          this.queues = queues.queues,
+            this.initForm();
         }
       });
   }
@@ -45,13 +44,13 @@ export class QueueListComponent implements OnInit, OnDestroy {
         count: queue.count,
         selected: queue.selected
       }))
-    )
+    );
     this.subscription.unsubscribe();
   }
 
   onClick(index: number, event: any) {
-    console.log(index,event)
-    this.store.dispatch(new queueActions.SelectQueue({ index: index }))
+    console.log(index, event);
+    this.store.dispatch(new queueActions.SelectQueue({ index: index }));
   }
 
   ngOnDestroy() {
@@ -64,17 +63,19 @@ export class QueueListComponent implements OnInit, OnDestroy {
     this.queueForm.value.queueArray
       .filter(queue => queue.selected)
       .forEach(queue => this.queueList.push(queue.name));
-    console.log("List of selected :::",this.queueList)
-    this.store.dispatch(new queueActions.ResendQueues(this.queueList))
+    this.store.dispatch(new queueActions.ResendQueues(this.queueList));
   }
 
-  onDelete(){
+  onDelete() {
     this.queueList = [];
     this.queueForm.value.queueArray
       .filter(queue => queue.selected)
       .forEach(queue => this.queueList.push(queue.name));
-    console.log("List of selected :::",this.queueList)
-    this.store.dispatch(new queueActions.DeleteQueues(this.queueList))
+    this.store.dispatch(new queueActions.DeleteQueues(this.queueList));
+  }
+
+  onClear() {
+    this.store.dispatch(new queueActions.FetchQueues());
   }
 
 }
