@@ -22,7 +22,6 @@ import { environment } from './../environments/environment'
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    QueueModule,
     CoreModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),

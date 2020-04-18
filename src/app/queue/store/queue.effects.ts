@@ -5,6 +5,7 @@ import { Store } from "@ngrx/store";
 import { map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
 import { Queue } from '../../shared/queue.model';
 import * as queueActions from './queue.action';
+import { Observable, observable } from 'rxjs';
 
 @Injectable()
 export class QueueEffects {
@@ -29,18 +30,20 @@ export class QueueEffects {
             (queues) => {
                 return {
                     type: queueActions.SET_QUEUES,
+              
                     payload: queues
                 };
             }
         )
     );
 
-    @Effect({ dispatch: false })
-    resendQueues = this.action$.ofType(queueActions.RESEND_QUEUES)
-        .pipe(
+    @Effect()
+    resendQueues = this.action$.pipe(
+            ofType(queueActions.RESEND_QUEUES),
+            map((action: queueActions.ResendQueues) => action.payload),
             switchMap(
-                (action: queueActions.ResendQueues) => {
-                    const req = new HttpRequest('post', "http://localhost:9090/resend", action.payload);
+                (selectedQueues : string[]) => {
+                    const req = new HttpRequest('post', "http://localhost:9090/resend", selectedQueues);
                     return this.httpClient.request(req);
                 }
             ),
