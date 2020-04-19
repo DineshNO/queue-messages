@@ -1,14 +1,12 @@
-<form name="queueForm" [formGroup]="queueForm" novalidate (ngSubmit)="onSubmit()">
-    <section id="top">
-        <div *ngIf="successMessage$ | async as successMessage">
-            <div class="alert alert-success">{{successMessage}}</div>
-        </div>
-        <div *ngIf="errorMessage$ | async as errorMessage">
-            <div class="alert alert-danger">{{errorMessage}}</div>
-        </div>
-    </section>
-    <div class="container-fluid-d table-responsive">
-        <div *ngIf="queues; else loading">
+<div *ngIf="queues; else loading">
+    <div *ngIf="successMessage$ | async as successMessage">
+        <div class="alert alert-success">{{successMessage}}</div>
+    </div>
+    <div *ngIf="errorMessage$ | async as errorMessage">
+        <div class="alert alert-danger">{{errorMessage}}</div>
+    </div>
+    <form name="queueForm" [formGroup]="queueForm" novalidate (ngSubmit)="onSubmit()">
+        <div class="container-fluid-d table-responsive">
             <table formArrayName="queueArray" class="table table-success table-sm">
                 <thead class="thead-dark">
                     <tr>
@@ -17,16 +15,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr [formGroupName]="i" *ngFor="let queueCtrl of queueForm['controls'].queueArray['controls'] ;
+                    <tr [formGroupName]="i" *ngFor="let queueCtrl of aliases ;
                                 let queue of queues
                                 let i = index">
                         <td>
                             <div class="custom-control custom-checkbox justify-content-start">
-                                <input formControlName="selected" type="checkbox" class="custom-control-input" id="label-{{i}}">
+                                <input formControlName="selected" type="checkbox" class="custom-control-input"
+                                    id="label-{{i}}">
                                 <label class="custom-control-label" for="label-{{i}}">{{queue.name}}</label>
                             </div>
                         </td>
-                        <td style="width: 16.66%;text-align: center;"><span class="badge badge-danger badge-pill" style="width: 50px">{{queue.count}}</span></td>
+                        <td style="width: 16.66%;text-align: center;"><span class="badge badge-danger badge-pill"
+                                style="width: 50px">{{queue.count}}</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -36,6 +36,6 @@
                 <button class="btn btn-primary" type="button" (click)="clear()">Refresh</button>
             </div>
         </div>
-        <ng-template #loading>Loading Queue Data...</ng-template>
-    </div>
-</form>
+    </form>
+</div>
+<ng-template #loading>Loading Queue Data...</ng-template>

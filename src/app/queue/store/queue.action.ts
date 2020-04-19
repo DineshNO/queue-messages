@@ -1,72 +1,47 @@
 import { Action } from '@ngrx/store';
 import { Queue } from '../../shared/queue.model';
 
-export enum QueueActionEnum {
-    FETCH_QUEUES = 'FETCH_QUEUES',
-    SET_QUEUES = 'SET_QUEUES',
-    SELECT_QUEUE = 'SELECT_QUEUE',
-    RESEND_QUEUES = 'RESEND_QUEUES',
-    DELETE_QUEUES = 'DELETE_QUEUES'
+export enum QueueActionTypes {
+    FetchQueues = '[Queue] Fetch Queue',
+    SetQueues = '[Queue] Set Queues',
+    ResendQueues = '[Queue] Resend Queues',
+    DeleteQueues = '[Queue] Delete Queues',
+    SetSuccessMessage = '[Queue] Success Message',
+    SetErrorMessage = '[Queue] Error Message'
 }
-export const FETCH_QUEUES = 'FETCH_QUEUES';
-export const SET_QUEUES = 'SET_QUEUES';
-export const SELECT_QUEUE = 'SELECT_QUEUE';
-export const RESEND_QUEUES = 'RESEND_QUEUES';
-export const DELETE_QUEUES = 'DELETE_QUEUES';
-export const RESEND_SUCCESS = 'RESEND_SUCCESS';
-export const RESEND_FAILED = 'RESEND_FAILED';
-export const DELETE_SUCCESS = 'DELETE_SUCCESS';
-export const DELETE_FAILED = 'DELETE_FAILED';
 
 export class FetchQueues implements Action {
-    readonly type: string = FETCH_QUEUES
-    payload: any
-    constructor() { }
+    readonly type = QueueActionTypes.FetchQueues;
 }
 
 export class SetQueues implements Action {
-    readonly type: string = SET_QUEUES
+    readonly type: string = QueueActionTypes.SetQueues
     constructor(public payload: Queue[]) { }
-
-}
-
-export class SelectQueue implements Action {
-    readonly type: string = SELECT_QUEUE;
-    constructor(public payload: { index: number }) { }
 }
 
 export class ResendQueues implements Action {
-    readonly type: string = RESEND_QUEUES
+    readonly type: string = QueueActionTypes.ResendQueues
     constructor(public payload: string[]) { }
 }
 
 export class DeleteQueues implements Action {
-    readonly type: string = DELETE_QUEUES
+    readonly type: string = QueueActionTypes.DeleteQueues
     constructor(public payload: string[]) { }
 }
 
-export class ResendSuccess implements Action {
-    readonly type: string = RESEND_SUCCESS
-    payload: string = 'Queue resend was successful'
-    constructor() { }
+export class Success implements Action {
+    readonly type: string = QueueActionTypes.SetSuccessMessage
+    constructor(public payload: string) { }
 }
 
-export class ResendFailed implements Action {
-    readonly type: string = RESEND_FAILED
-    payload: string = 'Queue resend failed'
-    constructor() { }
+export class Failed implements Action {
+    readonly type: string = QueueActionTypes.SetErrorMessage
+    constructor(public payload: string) { }
 }
 
-export class DeleteSuccess implements Action {
-    readonly type: string = DELETE_SUCCESS
-    payload: string = 'Queue delete was successful'
-    constructor() { }
-}
-
-export class DeleteFailed implements Action {
-    readonly type: string = DELETE_FAILED
-    payload: string = 'Queue delete failed'
-    constructor() { }
-}
-
-export type QueueActions = FetchQueues | SetQueues | ResendQueues | SelectQueue | DeleteQueues | ResendFailed | ResendSuccess;
+export type QueueActions = FetchQueues
+                             | SetQueues 
+                             | ResendQueues 
+                             | DeleteQueues 
+                             | Failed 
+                             | Success ;

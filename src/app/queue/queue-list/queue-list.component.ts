@@ -23,16 +23,20 @@ export class QueueListComponent implements OnInit, OnDestroy {
     private store: Store<fromQueue.State>) {
   }
 
+  get aliases() {
+    return this.queueForm['controls'].queueArray['controls'];
+  }
+
   ngOnInit(): void {
     this.subscription = this.store.pipe(select(fromQueue.getQueueList))
-                            .subscribe(queues => {
-                              if (queues) {
-                                this.queues = queues;
-                                this.initForm();
-                              }
-                            });
-     this.successMessage$ = this.store.pipe(select(fromQueue.getSuccessMessage)) 
-     this.errorMessage$ = this.store.pipe(select(fromQueue.getError)) 
+      .subscribe(queues => {
+        if (queues) {
+          this.queues = queues;
+          this.initForm();
+        }
+      });
+    this.successMessage$ = this.store.pipe(select(fromQueue.getSuccessMessage))
+    this.errorMessage$ = this.store.pipe(select(fromQueue.getError))
   }
 
   initForm() {
@@ -49,29 +53,21 @@ export class QueueListComponent implements OnInit, OnDestroy {
     );
   }
 
-  onClick(index: number, event: any) {
-    console.log(index, event);
-    this.store.dispatch(new queueActions.SelectQueue({ index: index }));
-  }
-
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.queueForm.reset();
   }
 
   onSubmit() {
     this.filterQuery()
-    this.store.dispatch(new queueActions.ResendQueues(this.queueList)); 
-    //this.clear()   
+    this.store.dispatch(new queueActions.ResendQueues(this.queueList));
   }
 
   delete() {
     this.filterQuery()
     this.store.dispatch(new queueActions.DeleteQueues(this.queueList));
-    //this.clear()   
   }
 
-  filterQuery(){
+  filterQuery() {
     this.queueList = [];
     this.queueForm.value.queueArray
       .filter(queue => queue.selected)
@@ -79,7 +75,7 @@ export class QueueListComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.queueForm.reset()
+    this.queueForm.reset(this.queueForm.value);
   }
 
 }

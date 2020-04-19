@@ -1,7 +1,8 @@
-import * as queueActions from './queue.action'
-import * as fromRoot from '../../store/app.reducer'
-import { Queue } from '../../shared/queue.model'
-import { createFeatureSelector, createSelector } from '@ngrx/store'
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Queue } from '../../shared/queue.model';
+import * as fromRoot from '../../store/app.reducer';
+import { QueueActions, QueueActionTypes } from './queue.action';
+
 
 export interface State extends fromRoot.State {
     queues: QueueState,
@@ -9,7 +10,7 @@ export interface State extends fromRoot.State {
 
 export interface QueueState {
     queues: Queue[];
-    selectedQueues: Queue[],
+    selectedQueues: string[],
     successMessage: string,
     error: string
 }
@@ -38,26 +39,24 @@ export const getError = createSelector(
     state => state?.error
 )
 
-export function queueReducer(state: QueueState = initialState, action: queueActions.QueueActions): QueueState {
+export function queueReducer(state: QueueState = initialState, action): QueueState {
     switch (action.type) {
-        case queueActions.SET_QUEUES:
+        case QueueActionTypes.SetQueues:
             return {
                 ...state,
                 queues: action.payload
             }
-        case queueActions.RESEND_SUCCESS:
-        case queueActions.DELETE_SUCCESS:
+        case QueueActionTypes.SetSuccessMessage:
             return {
                 ...state,
-                successMessage: action.payload,
+                successMessage: action.payload as string,
                 error: ''
             }
-        case queueActions.RESEND_FAILED:
-        case queueActions.DELETE_FAILED:
+        case QueueActionTypes.SetErrorMessage:
             return {
                 ...state,
                 successMessage: '',
-                error: action.payload
+                error: action.payload as string
             }
     }
 }
