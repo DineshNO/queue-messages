@@ -39,12 +39,12 @@ export const getError = createSelector(
     state => state?.error
 )
 
-export function queueReducer(state: QueueState = initialState, action): QueueState {
+export function queueReducer(state: QueueState = initialState, action : QueueActions): QueueState {
     switch (action.type) {
         case QueueActionTypes.SetQueues:
             return {
                 ...state,
-                queues: action.payload
+                queues: action.payload as Queue[]
             }
         case QueueActionTypes.SetSuccessMessage:
             return {

@@ -31,9 +31,9 @@
                 </tbody>
             </table>
             <div>
-                <button class="btn btn-success" type="submit">Resend</button>
-                <button class="btn btn-danger" type="button" (click)="delete()">Delete</button>
-                <button class="btn btn-primary" type="button" (click)="clear()">Refresh</button>
+                <button class="btn btn-success" [disabled]="isEnable" type="submit">Resend</button>
+                <button class="btn btn-danger" type="button" [disabled]="isEnable" (click)="delete()">Delete</button>
+                <button class="btn btn-primary" type="button"  (click)="clear()">Refresh</button>
             </div>
         </div>
     </form>

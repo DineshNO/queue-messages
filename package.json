@@ -23,6 +23,7 @@
     "@ngrx/router-store": "^6.0.0",
     "@ngrx/store": "^6.1.0",
     "@ngrx/store-devtools": "^6.0.0",
+    "angular-in-memory-web-api": "^0.10.0",
     "bootstrap": "^4.4.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",

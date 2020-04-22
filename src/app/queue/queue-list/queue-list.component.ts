@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Queue } from '../../shared/queue.model';
 import * as queueActions from '../store/queue.action';
 import * as fromQueue from '../store/queue.reducer';
+import { find, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-queue-list',
@@ -18,13 +19,14 @@ export class QueueListComponent implements OnInit, OnDestroy {
   queues: Queue[];
   successMessage$: Observable<string>;
   errorMessage$: Observable<string>;
+  isEnable: boolean = true;
 
   constructor(private fb: FormBuilder,
     private store: Store<fromQueue.State>) {
   }
 
-  get aliases() {
-    return this.queueForm['controls'].queueArray['controls'];
+  get aliases(): FormArray {
+    return <FormArray>this.queueForm['controls'].queueArray['controls'];
   }
 
   ngOnInit(): void {
@@ -43,7 +45,7 @@ export class QueueListComponent implements OnInit, OnDestroy {
     this.queueForm = this.fb.group({
       queueArray: this.fb.array([])
     });
-    const control = <FormArray>this.queueForm.controls['queueArray'];
+    const control = <FormArray>this.queueForm.get('queueArray');
     this.queues.forEach(
       (queue) => control.push(this.fb.group({
         name: queue.name,
@@ -51,15 +53,23 @@ export class QueueListComponent implements OnInit, OnDestroy {
         selected: queue.selected
       }))
     );
+
+    this.queueForm.get('queueArray')
+        .valueChanges
+        .subscribe(queues => this.isEnable = !queues.some(q => q.selected))
+
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.queueForm.reset();
   }
 
   onSubmit() {
-    this.filterQuery()
-    this.store.dispatch(new queueActions.ResendQueues(this.queueList));
+    if (confirm('Please confirm to resend')) {
+      this.filterQuery()
+      this.store.dispatch(new queueActions.ResendQueues(this.queueList));
+    }
   }
 
   delete() {
@@ -68,14 +78,13 @@ export class QueueListComponent implements OnInit, OnDestroy {
   }
 
   filterQuery() {
-    this.queueList = [];
-    this.queueForm.value.queueArray
-      .filter(queue => queue.selected)
-      .forEach(queue => this.queueList.push(queue.name));
+    this.queueList = this.queueForm.value.queueArray
+      .filter(queue => queue.selected === true)
+      .map(queue => queue.name)
   }
 
   clear() {
-    this.queueForm.reset(this.queueForm.value);
+    this.queueForm.reset();
   }
 
 }

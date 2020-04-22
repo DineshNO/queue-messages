@@ -8,6 +8,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { QueueEffects } from './store/queue.effects';
 import { queueReducer } from './store/queue.reducer';
 import { QueueComponent } from './queue.component';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api'
+import { QueueData } from './queue-data';
 
 @NgModule({
   declarations: [
@@ -18,11 +20,12 @@ import { QueueComponent } from './queue.component';
     CommonModule,
     ReactiveFormsModule,
     QueueRoutingModule,
-    StoreModule.forFeature('queues',queueReducer),
+    //InMemoryWebApiModule.forRoot(QueueData),
+    StoreModule.forFeature('queues', queueReducer),
     EffectsModule.forFeature([QueueEffects])
   ],
-  exports:[
-    
+  exports: [
+
   ]
 })
 export class QueueModule { }
