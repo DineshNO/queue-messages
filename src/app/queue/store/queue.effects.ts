@@ -52,7 +52,7 @@ export class QueueEffects {
                                 }),
                                 mergeMap(res => [
                                     new QueueActions.FetchQueues(),
-                                    new QueueActions.Success('Resend success')
+                                    new QueueActions.Success('Delete success')
                                 ]),
                                 catchError(err => of(new QueueActions.Failed('Delete failed')))
                             );

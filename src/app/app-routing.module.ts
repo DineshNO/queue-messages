@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, PreloadingStrategy, PreloadAllModules } from '@angular/router';
-import { AppComponent } from './app.component';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/home/home.component';
 
 const routes: Routes = [
@@ -10,6 +9,10 @@ const routes: Routes = [
   {
     path: 'queues',
     loadChildren: () => import('./queue/queue.module').then(m => m.QueueModule)
+  },
+  {
+    path: 'layout',
+    loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
   }
 ];
 

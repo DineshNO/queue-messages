@@ -34,6 +34,7 @@ export class QueueListComponent implements OnInit, OnDestroy {
       .subscribe(queues => {
         if (queues) {
           this.queues = queues;
+          this.isEnable = true;
           this.initForm();
         }
       });
@@ -57,7 +58,6 @@ export class QueueListComponent implements OnInit, OnDestroy {
     this.queueForm.get('queueArray')
         .valueChanges
         .subscribe(queues => this.isEnable = !queues.some(q => q.selected))
-
   }
 
   ngOnDestroy() {

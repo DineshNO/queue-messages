@@ -3,7 +3,6 @@ import { Queue } from '../../shared/queue.model';
 import * as fromRoot from '../../store/app.reducer';
 import { QueueActions, QueueActionTypes } from './queue.action';
 
-
 export interface State extends fromRoot.State {
     queues: QueueState,
 }
@@ -12,14 +11,16 @@ export interface QueueState {
     queues: Queue[];
     selectedQueues: string[],
     successMessage: string,
-    error: string
+    error: string,
+    isEnabled:boolean
 }
 
 const initialState: QueueState = {
     queues: [],
     selectedQueues: [],
     successMessage: '',
-    error: ''
+    error: '',
+    isEnabled : false
 };
 
 const getQueueListFeatureState = createFeatureSelector<QueueState>('queues');
@@ -50,13 +51,15 @@ export function queueReducer(state: QueueState = initialState, action : QueueAct
             return {
                 ...state,
                 successMessage: action.payload as string,
-                error: ''
+                error: '',
+                isEnabled : false
             }
         case QueueActionTypes.SetErrorMessage:
             return {
                 ...state,
                 successMessage: '',
-                error: action.payload as string
+                error: action.payload as string,
+                isEnabled : false
             }
     }
 }

@@ -1,0 +1,6 @@
+<div *ngIf="success$ | async as successMessage">
+    <div class="alert alert-success">{{successMessage}}</div>
+</div>
+<div *ngIf="error$ | async as errorMessage">
+    <div class="alert alert-danger">{{errorMessage}}</div>
+</div>

@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { QueueInterceptor } from './shared/queue.interceptor';
-import { DataService } from './shared/data.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +26,6 @@ import { DataService } from './shared/data.service';
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
-    DataService,
     { provide: HTTP_INTERCEPTORS, useClass: QueueInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
