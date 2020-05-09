@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/home/home.component';
+import { InformComponent } from './inform/inform.component';
 
 const routes: Routes = [
   {
     path: '', component: HomeComponent
+  },
+  {
+    path: 'inform',
+    loadChildren: () => import('./inform/inform.module').then(m => m.InformModule)
   },
   {
     path: 'queues',
