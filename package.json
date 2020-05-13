@@ -25,6 +25,7 @@
     "@ngrx/store-devtools": "^6.0.0",
     "angular-in-memory-web-api": "^0.10.0",
     "bootstrap": "^4.4.1",
+    "clipboard": "^2.0.6",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

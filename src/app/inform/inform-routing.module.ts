@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { InformResponseComponent } from './inform-response/inform-response.component';
 import { InformComponent } from './inform.component';
-
 
 const routes: Routes = [
     {
-        path: '', component: InformComponent
+        path: '', component: InformComponent, children: [
+            { path: 'details', component: InformResponseComponent } 
+        ]
     }
 ]
 
 @NgModule({
-    imports:[
+    imports: [
         RouterModule.forChild(routes)
     ],
-    exports:[
+    exports: [
         RouterModule
     ]
 })
-export class InformRoutingModule{}
+export class InformRoutingModule { }

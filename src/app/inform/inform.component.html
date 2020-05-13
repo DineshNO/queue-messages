@@ -1,1 +1,32 @@
-<p>inform works!</p>
+<div class="col">
+    <h3>Shipment Details</h3>
+</div>
+<div class="col">
+    <form [formGroup]="informCustomerForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <div class="controls">
+                        <input type="text" id="fakturaId" placeholder="Faktura" class="form-control"
+                            formControlName="fakturaId">
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <div class="controls">
+                        <input type="text" id="reason" placeholder="Reason for rejection" class="form-control"
+                            formControlName="reason">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-success" [disabled]="!informCustomerForm.valid">submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<router-outlet></router-outlet>

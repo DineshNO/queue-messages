@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div class="form-row">
+        <div *ngIf="error$ | async as errorMessage">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+        </div>
+    </div>
+    <div *ngIf="shipment$ | async as shipment">
+        <table cellpadding="3" class="table table-borderless table-sm table-light">
+        <thead>
+            <tr>
+                <td style="text-align: left" colspan="1" rowspan="1">Shipment Id </td>
+                <td style="text-align: left" colspan="1" rowspan="1">:<span>{{shipment.id}}</span></td>
+            </tr>
+            <tr>
+                <td style="text-align: left" colspan="1" rowspan="1">Filename </td>
+                <td style="text-align: left" colspan="1" rowspan="1">:<span>{{shipment.filename}}</span></td>
+            </tr>
+            <tr>
+                <td style="text-align: left" colspan="1" rowspan="1">Date </td>
+                <td style="text-align: left" colspan="1" rowspan="1">:<span>{{shipment.shipmentDate}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: left" colspan="1" rowspan="1">Invoice number </td>
+                <td style="text-align: left" colspan="1" rowspan="1">:<span>{{shipment.invoiceNo}}</span></td>
+            </tr>
+            <tr>
+                <td style="text-align: left" colspan="1" rowspan="1">format </td>
+                <td style="text-align: left" colspan="1" rowspan="1">:<span>{{shipment.format}}</span></td>
+            </tr>
+            <tr>
+                <td style="text-align: left" colspan="1" rowspan="1">Channel </td>
+                <td style="text-align: left" colspan="1" rowspan="1">:<span>{{shipment.channel}}</span></td>
+            </tr>
+            <tr>
+                <td style="text-align: left" colspan="1" rowspan="1">Count </td>
+                <td style="text-align: left" colspan="1" rowspan="1">:<span>{{shipment.count}}</span></td>
+            </tr>
+            <tr>
+                <td style="text-align: left" colspan="1" rowspan="1">Reason </td>
+                <td style="text-align: left" colspan="1" rowspan="1">:<span>{{shipment.reason}}</span></td>
+            </tr>
+        </thead>
+        </table>
+    </div>
+</div>
