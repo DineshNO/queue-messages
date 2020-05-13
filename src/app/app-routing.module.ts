@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'layout',
     loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
+  },
+  {
+    path: 'peppol',
+    loadChildren: () => import('./peppol/peppol.module').then(m => m.PeppolModule)
   }
 ];
 

@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { QueueInterceptor } from './shared/queue.interceptor';
+import { PeppolComponent } from './peppol/peppol.component';
 
 @NgModule({
   declarations: [

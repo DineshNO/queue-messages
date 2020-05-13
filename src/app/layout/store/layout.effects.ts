@@ -1,12 +1,12 @@
-import { HttpClient, HttpRequest, HttpResponse, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, mergeMap, switchMap, map } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { LayoutQueue } from '../layout.model';
 import * as LayoutActions from './layout.action';
 import { LayoutActionTypes } from './layout.action';
-import { LayoutQueue } from '../layout.model';
 
 
 @Injectable()

@@ -1,0 +1,23 @@
+<div class="col display-4">
+    Peppol Queue Operations
+</div>
+<div class="col">
+    <div class="form-group">
+        <form [formGroup]="peppolForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <div class="col-sm-8" style="margin-top: 20px;">
+                    <textarea id="id" class="form-control" formControlName="listOfIds"
+                        placeholder="List of peppol identifiers ..." type="text" rows="6" cols="100"></textarea>
+                </div>
+            </div>
+            <div class="form-row" style="margin-top: 20px;">
+                <div class="col-xs-6">
+                    <button type="submit" class="btn btn-primary" [disabled]="!peppolForm.valid">To Initial</button>
+                </div>
+                <div class="col-xs-6">
+                    <button type="button" (click)="resetQueueToFailed()" class="btn btn-danger" [disabled]="!peppolForm.valid">To Failed</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
